@@ -1,101 +1,261 @@
+"use client";
+
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { FaTelegramPlane, FaTwitter, FaChartBar } from "react-icons/fa";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.js
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import MemeEditor from "./components/MemeEditor";
+import SnakeGame from "./components/SnakeGame";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+export default function Component() {
+  const [activeWindows, setActiveWindows] = useState({});
+  const [startMenuOpen, setStartMenuOpen] = useState(false);
+  const posRefs = useRef({});
+  const [zIndex, setZIndex] = useState(1000);
+
+  const toggleWindow = (id, isOpen) => {
+    setActiveWindows((prev) => ({ ...prev, [id]: isOpen }));
+    if (isOpen && !posRefs.current[id]) {
+      posRefs.current[id] = {
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        offsetX: 0,
+        offsetY: 0,
+        dragging: false,
+      };
+    }
+    if (isOpen) {
+      setZIndex((prev) => prev + 1);
+      posRefs.current[id].zIndex = zIndex;
+    }
+  };
+
+  const onMouseDown = (id, event) => {
+    posRefs.current[id].offsetX = event.clientX - posRefs.current[id].x;
+    posRefs.current[id].offsetY = event.clientY - posRefs.current[id].y;
+    posRefs.current[id].dragging = true;
+    setZIndex((prev) => prev + 1);
+    posRefs.current[id].zIndex = zIndex;
+  };
+
+  const onMouseMove = (id, event) => {
+    if (posRefs.current[id]?.dragging) {
+      const newX = event.clientX - posRefs.current[id].offsetX;
+      const newY = event.clientY - posRefs.current[id].offsetY;
+      posRefs.current[id].x = newX;
+      posRefs.current[id].y = newY;
+      setActiveWindows((prev) => ({ ...prev })); // Force update
+    }
+  };
+
+  const onMouseUp = (id) => {
+    if (posRefs.current[id]?.dragging) {
+      posRefs.current[id].dragging = false;
+    }
+  };
+
+  const apps = [
+    {
+      id: 1,
+      name: "Notes",
+      icon: "📝",
+      content: (
+        <div className="space-y-4 p-4 h-full overflow-auto">
+          <div className="bg-yellow-100 p-3 rounded-md shadow">
+            <h3 className="font-semibold">Meeting Notes</h3>
+            <p>Discuss project timeline and deliverables</p>
+          </div>
+          <div className="bg-blue-100 p-3 rounded-md shadow">
+            <h3 className="font-semibold">Shopping List</h3>
+            <ul className="list-disc list-inside">
+              <li>Milk</li>
+              <li>Eggs</li>
+              <li>Bread</li>
+            </ul>
+          </div>
+          <div className="bg-green-100 p-3 rounded-md shadow">
+            <h3 className="font-semibold">Ideas</h3>
+            <p>New app concept: AI-powered personal assistant</p>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      ),
+    },
+    {
+      id: 2,
+      name: "Photos",
+      icon: "🖼️",
+      content: (
+        <div className="grid grid-cols-2 gap-4 p-4">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src="/placeholder.svg?height=100&width=100"
+            alt="Photo 1"
+            width={100}
+            height={100}
+            className="rounded-md"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
           <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
+            src="/placeholder.svg?height=100&width=100"
+            alt="Photo 2"
+            width={100}
+            height={100}
+            className="rounded-md"
           />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
           <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
+            src="/placeholder.svg?height=100&width=100"
+            alt="Photo 3"
+            width={100}
+            height={100}
+            className="rounded-md"
           />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <Image
+            src="/placeholder.svg?height=100&width=100"
+            alt="Photo 4"
+            width={100}
+            height={100}
+            className="rounded-md"
+          />
+        </div>
+      ),
+    },
+    {
+      id: 3,
+      name: "Game",
+      icon: "🎮",
+      content: (
+        <div className="space-y-2 p-4 h-full overflow-auto">
+          <SnakeGame />
+        </div>
+      ),
+    },
+    {
+      id: 4,
+      name: "Meme Editor",
+      icon: "🖼️",
+      content: (
+        <div className="space-y-4 p-4">
+          <MemeEditor />
+        </div>
+      ),
+    },
+  ];
+
+  return (
+    <div
+      className="relative min-h-screen bg-cover bg-center"
+      style={{
+        backgroundImage: "url('/assets/background-2.jpg')",
+      }}
+      onMouseUp={() => apps.forEach((app) => onMouseUp(app.id))}
+    >
+      <div className="absolute inset-0 p-4 grid grid-cols-10 grid-rows-6 gap-1">
+        {apps.map((app) => (
+          <div
+            key={app.id}
+            className="flex flex-col items-center justify-center"
+          >
+            <button
+              onClick={() => toggleWindow(app.id, true)}
+              className="p-2 rounded-lg hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
+            >
+              <span className="text-4xl">{app.icon}</span>
+            </button>
+            <span className="text-white text-sm mt-1">{app.name}</span>
+          </div>
+        ))}
+      </div>
+
+      {Object.entries(activeWindows).map(
+        ([id, isOpen]) =>
+          isOpen && (
+            <div
+              key={id}
+              className="absolute bg-white rounded-lg shadow-lg overflow-hidden"
+              style={{
+                left: `${posRefs.current[id].x}px`,
+                top: `${posRefs.current[id].y}px`,
+                zIndex: posRefs.current[id].zIndex,
+                width: "500px",
+                height: "550px",
+              }}
+            >
+              <div
+                className="bg-gray-200 p-2 cursor-move flex items-center justify-between"
+                onMouseDown={(e) => onMouseDown(id, e)}
+                onMouseMove={(e) => onMouseMove(id, e)}
+              >
+                <div className="flex items-center">
+                  <span className="mr-2 text-2xl">
+                    {apps.find((app) => app.id === parseInt(id)).icon}
+                  </span>
+                  <span className="font-semibold">
+                    {apps.find((app) => app.id === parseInt(id)).name}
+                  </span>
+                </div>
+                <button
+                  onClick={() => toggleWindow(id, false)}
+                  className="rounded-full hover:bg-gray-300 transition-colors duration-200 w-6 h-6 flex items-center justify-center"
+                >
+                  ✕
+                </button>
+              </div>
+              <div className="h-[calc(100%-40px)] overflow-auto">
+                {apps.find((app) => app.id === parseInt(id)).content}
+              </div>
+            </div>
+          )
+      )}
+
+      <div className="absolute bottom-0 left-0 w-full bg-gray-800 text-white p-2 flex items-center space-x-4">
+        <button
+          onClick={() => setStartMenuOpen(!startMenuOpen)}
+          className="text-white hover:bg-white/20 p-1 rounded"
+        >
+          🪟
+        </button>
+        <div className="h-6 w-px bg-gray-600" />
+        {apps.map(
+          (app) =>
+            activeWindows[app.id] && (
+              <button
+                key={app.id}
+                onClick={() => toggleWindow(app.id, true)}
+                className="text-white hover:bg-white/20 p-1 rounded flex items-center"
+              >
+                <span className="mr-2">{app.icon}</span>
+                <span>{app.name}</span>
+              </button>
+            )
+        )}
+        <div className="flex-grow" />
+        <span className="cursor-pointer">
+          <FaTelegramPlane /> 
+        </span>
+        <span className="cursor-pointer">
+          <FaTwitter /> 
+        </span>
+        <span className="cursor-pointer">
+          <FaChartBar /> 
+        </span>
+      </div>
+
+      {startMenuOpen && (
+        <div className="absolute bottom-12 left-0 w-64 bg-gray-800 text-white rounded-tr-lg shadow-lg p-4">
+          <h2 className="text-xl font-bold mb-4">Start Menu</h2>
+          {apps.map((app) => (
+            <button
+              key={app.id}
+              className="w-full text-left text-white hover:bg-white/20 p-2 rounded mb-2 flex items-center"
+              onClick={() => {
+                toggleWindow(app.id, true);
+                setStartMenuOpen(false);
+              }}
+            >
+              <span className="mr-2 text-2xl">{app.icon}</span>
+              <span>{app.name}</span>
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
