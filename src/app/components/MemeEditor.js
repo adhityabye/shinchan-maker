@@ -11,11 +11,12 @@ const MemeEditor = () => {
   const canvasRef = useRef(null);
 
   const defaultStickers = [
-    "/assets/img-01.png",
-    "/assets/img-01.png",
-    "/assets/img-01.png",
+    "/meme/STICKER1.png",
+    "/meme/STICKER2.png",
+    "/meme/STICKER3.png",
+    "/meme/STICKER4.png",
+    "/meme/STICKER5.png",
   ];
-
   useEffect(() => {
     drawMeme();
   }, [backgroundImage, stickers, texts]);
@@ -164,7 +165,7 @@ const MemeEditor = () => {
   };
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 rounded-lg justify-center">
       <canvas
         ref={canvasRef}
         width={300}
