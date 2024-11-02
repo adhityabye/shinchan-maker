@@ -192,7 +192,7 @@ export default function Component() {
     {
       id: 7,
       name: "Meme Editor",
-      iconSrc: "/icons/coloring.png",
+      iconSrc: "/icons/meme.png",
       content: (
         <div className="space-y-4 p-4">
           <MemeEditor />
