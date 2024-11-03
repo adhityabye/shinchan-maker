@@ -75,14 +75,15 @@ export default function Component() {
       iconSrc: "/icons/diary.png",
       content: (
         <div className="space-y-4 p-4 h-full overflow-auto">
-          <div className="bg-yellow-100 p-3 rounded-md shadow">
+          <div className="p-3 rounded-md shadow">
             <h3 className="font-semibold">Shinchan Diary</h3>
-            <div className="flex justify-center">
+            <div className="flex justify-center w-full">
               <Image
                 src="/diary/diary-1.png"
                 alt="Meeting notes"
-                width={300}
-                height={200}
+                width={300} // Width of the image
+                height={200} // Height of the image
+                layout="responsive" // Makes the image responsive to the size of its container
                 className="mt-2 rounded-md"
               />
             </div>

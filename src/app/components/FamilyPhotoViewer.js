@@ -23,8 +23,8 @@ const FamilyPhotoViewer = () => {
 
   return (
     <div className="space-y-4 p-4 h-full overflow-auto bg-gray-100 rounded-lg">
-      <div className="bg-white p-6 rounded-xl shadow-lg">
-        <h2 className="text-3xl font-bold mb-4 text-gray-800">Family Album</h2>
+      <div className="bg-white p-6 rounded-xl">
+        <h2 className="text-3xl font-bold text-gray-800">Family Album</h2>
         <div className="relative" style={{ height: "calc(100vh - 200px)" }}>
           <div className="h-full rounded-lg overflow-hidden">
             <Image
@@ -91,8 +91,8 @@ const FamilyPhotoViewer = () => {
           ))}
         </div>
         <p className="mt-4 text-gray-600 text-center">
-          Cherishing moments with loved ones. Use the arrows or dots to navigate
-          through the photos.
+          Cherishing moments with loved ones.
+          {/* Use the arrows or dots to navigate through the photos. */}
         </p>
       </div>
     </div>

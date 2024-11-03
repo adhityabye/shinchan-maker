@@ -43,8 +43,8 @@ const HomePhotoViewer = () => {
 
   return (
     <div className="space-y-4 p-4 h-full overflow-hidden bg-gray-100 rounded-lg">
-      <h2 className="text-3xl font-bold mb-4 text-gray-800">Welcome Home</h2>
-      <div className="relative h-[calc(100%-4rem)] w-full overflow-hidden rounded-lg shadow-lg">
+      <h2 className="text-3xl font-bold mb-4 text-gray-800">My Home</h2>
+      <div className="relative h-[calc(100%-4rem)] w-full overflow-hidden rounded-lg">
         {images.map((image, index) => (
           <div
             key={index}
@@ -66,10 +66,11 @@ const HomePhotoViewer = () => {
             />
           </div>
         ))}
-        <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black to-transparent">
-          <p className="text-white text-lg font-semibold">
+        <div className="absolute bottom-0 left-0 right-0 p-4">
+          {/* bg-gradient-to-t from-black to-transparent */}
+          {/* <p className="text-white text-lg font-semibold">
             {images[currentIndex].alt}
-          </p>
+          </p> */}
         </div>
         <button
           onClick={prevSlide}
@@ -112,7 +113,7 @@ const HomePhotoViewer = () => {
           </svg>
         </button>
       </div>
-      <div className="flex justify-center mt-4 space-x-2">
+      <div className="flex justify-center p-4 space-x-2">
         {images.map((_, index) => (
           <button
             key={index}

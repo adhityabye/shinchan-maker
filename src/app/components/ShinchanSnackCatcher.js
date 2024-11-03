@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 const GAME_WIDTH = 400;
-const GAME_HEIGHT = 500;
+const GAME_HEIGHT = 400;
 const BASKET_WIDTH = 80;
 const BASKET_HEIGHT = 60;
 const ITEM_SIZE = 40;
@@ -123,7 +123,7 @@ const ShinchanSnackCatcher = () => {
   };
 
   return (
-    <div className="bg-yellow-100 rounded-lg flex flex-col items-center">
+    <div className="rounded-lg flex flex-col items-center">
       <div className="mb-4">
         <span className="text-2xl font-bold">Score: {score}</span>
       </div>
@@ -145,7 +145,7 @@ const ShinchanSnackCatcher = () => {
         </div>
       )}
       <div className="mt-4 text-sm text-gray-600">
-        Use left and right arrow keys to move the basket
+        Use left and right arrow keys to help Shinchan catch the cookies
       </div>
     </div>
   );

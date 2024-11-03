@@ -21,7 +21,7 @@ const Memories = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-4 bg-yellow-100 rounded-lg">
+    <div className="flex flex-col items-center justify-center p-4 rounded-lg">
       <div className="relative w-full max-w-3xl">
         <Image
           src={photos[currentPhotoIndex].src}
