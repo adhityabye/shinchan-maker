@@ -19,10 +19,10 @@ export default function Page() {
 
   return (
     <div className="min-h-screen">
-      {/* {!isSignedIn && !isBooting && <SignInPage onSignIn={handleSignIn} />}
+      {!isSignedIn && !isBooting && <SignInPage onSignIn={handleSignIn} />}
       {isBooting && <BootTransition />}
-      {isSignedIn && <DesktopInterface />} */}
-      <DesktopInterface />
+      {isSignedIn && <DesktopInterface />}
+      {/* <DesktopInterface /> */}
     </div>
   );
 }

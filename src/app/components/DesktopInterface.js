@@ -81,9 +81,9 @@ export default function Component() {
               <Image
                 src="/diary/diary-1.png"
                 alt="Meeting notes"
-                width={300} // Width of the image
-                height={200} // Height of the image
-                layout="responsive" // Makes the image responsive to the size of its container
+                width={300}
+                height={200}
+                layout="responsive"
                 className="mt-2 rounded-md"
               />
             </div>
@@ -150,127 +150,127 @@ export default function Component() {
   ];
 
   return (
-    <div
-      className={`relative min-h-screen bg-cover bg-center ${
-        glitchEffect ? "animate-glitch" : ""
-      }`}
-      style={{
-        backgroundImage: "url('/assets/bg-main-hd.gif')",
-      }}
-      onMouseUp={() => apps.forEach((app) => onMouseUp(app.id))}
-    >
-      <div className="absolute inset-0 p-4 grid grid-cols-10 grid-rows-6 gap-1">
-        {apps.map((app) => (
-          <div
-            key={app.id}
-            className="flex flex-col items-center justify-center"
-            style={{
-              gridColumn: app.id % 3 === 1 ? 1 : app.id % 3 === 2 ? 2 : 3, // Wrap around every three items
-              gridRow: app.id <= 3 ? 1 : app.id <= 6 ? 2 : 3, // Row control: 1 for IDs 1-3, 2 for IDs 4-6, 3 for ID 7
-            }}
-          >
-            <button
-              onClick={() => toggleWindow(app.id, true)}
-              className="p-2 rounded-lg hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
-            >
-              <Image
-                src={app.iconSrc}
-                alt={`${app.name} icon`}
-                width={50}
-                height={50}
-                className="w-10 h-10 object-contain"
-              />
-            </button>
-            <span className="text-gray-800 font-bold text-sm mt-1 shadow-sm">
-              {app.name}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      {Object.entries(activeWindows).map(
-        ([id, isOpen]) =>
-          isOpen && (
+    <div className="relative min-h-screen flex flex-col">
+      <div
+        className={`flex-grow bg-cover bg-center`}
+        style={{
+          backgroundImage: "url('/assets/bg-main-hd.gif')",
+        }}
+        onMouseUp={() => apps.forEach((app) => onMouseUp(app.id))}
+      >
+        <div className="absolute inset-0 p-4 grid grid-cols-10 grid-rows-6 gap-1">
+          {apps.map((app) => (
             <div
-              key={id}
-              className="absolute bg-white shadow-lg overflow-hidden border border-gray-300 rounded-lg"
+              key={app.id}
+              className="flex flex-col items-center justify-center"
               style={{
-                left: `${posRefs.current[id].x}px`,
-                top: `${posRefs.current[id].y}px`,
-                zIndex: posRefs.current[id].zIndex,
-                width: "500px",
-                height: "550px",
+                gridColumn: app.id % 3 === 1 ? 1 : app.id % 3 === 2 ? 2 : 3,
+                gridRow: app.id <= 3 ? 1 : app.id <= 6 ? 2 : 3,
               }}
             >
-              <div
-                className="bg-gradient-to-r from-blue-600 to-blue-700 p-1 cursor-move flex items-center justify-between"
-                onMouseDown={(e) => onMouseDown(id, e)}
-                onMouseMove={(e) => onMouseMove(id, e)}
+              <button
+                onClick={() => toggleWindow(app.id, true)}
+                className="p-2 rounded-lg hover:bg-white/20 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-white/50"
               >
-                <div className="flex items-center">
-                  <span className="mr-2 text-xl text-white">
-                    {apps.find((app) => app.id === parseInt(id)).icon}
-                  </span>
-                  <span className="font-semibold text-white text-sm">
-                    {apps.find((app) => app.id === parseInt(id)).name}
-                  </span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <button className="text-white hover:bg-blue-500 rounded-sm p-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button className="text-white hover:bg-blue-500 rounded-sm p-1">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2v8h10V6H5z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => toggleWindow(id, false)}
-                    className="text-white hover:bg-red-500 rounded-sm p-1"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              <div className="h-[calc(100%-32px)] overflow-auto">
-                {apps.find((app) => app.id === parseInt(id)).content}
-              </div>
+                <Image
+                  src={app.iconSrc}
+                  alt={`${app.name} icon`}
+                  width={50}
+                  height={50}
+                  className="w-10 h-10 object-contain"
+                />
+              </button>
+              <span className="text-gray-800 font-bold text-sm mt-1 shadow-sm">
+                {app.name}
+              </span>
             </div>
-          )
-      )}
+          ))}
+        </div>
 
-      <div className="absolute bottom-0 left-0 w-full bg-[#6574B5] text-white p-2 flex items-center space-x-4">
+        {Object.entries(activeWindows).map(
+          ([id, isOpen]) =>
+            isOpen && (
+              <div
+                key={id}
+                className="absolute bg-white shadow-lg overflow-hidden border border-gray-300 rounded-lg"
+                style={{
+                  left: `${posRefs.current[id].x}px`,
+                  top: `${posRefs.current[id].y}px`,
+                  zIndex: posRefs.current[id].zIndex,
+                  width: "500px",
+                  height: "550px",
+                }}
+              >
+                <div
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 p-1 cursor-move flex items-center justify-between"
+                  onMouseDown={(e) => onMouseDown(id, e)}
+                  onMouseMove={(e) => onMouseMove(id, e)}
+                >
+                  <div className="flex items-center">
+                    <span className="mr-2 text-xl text-white">
+                      {apps.find((app) => app.id === parseInt(id)).icon}
+                    </span>
+                    <span className="font-semibold text-white text-sm">
+                      {apps.find((app) => app.id === parseInt(id)).name}
+                    </span>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <button className="text-white hover:bg-blue-500 rounded-sm p-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 10a1 1 0 011-1h8a1 1 0 110 2H6a1 1 0 01-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <button className="text-white hover:bg-blue-500 rounded-sm p-1">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M3 4a1 1 0 011-1h12a1 1 0 011 1v12a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2v8h10V6H5z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                    <button
+                      onClick={() => toggleWindow(id, false)}
+                      className="text-white hover:bg-red-500 rounded-sm p-1"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4"
+                        viewBox="0 0 20 20"
+                        fill="currentColor"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+                <div className="h-[calc(100%-32px)] overflow-auto">
+                  {apps.find((app) => app.id === parseInt(id)).content}
+                </div>
+              </div>
+            )
+        )}
+      </div>
+
+      <div className="bg-[#6574B5] text-white p-2 flex items-center space-x-4 relative z-50">
         <button
           onClick={() => setStartMenuOpen(!startMenuOpen)}
           className="text-white hover:bg-white/20 p-1 rounded"
@@ -293,24 +293,23 @@ export default function Component() {
                   height={10}
                   className="w-5 h-5 object-contain"
                 />
-                {/* <span>{app.name}</span> */}
               </button>
             )
         )}
-        <div className="flex-grow space-x-8" />
-        <span className="cursor-pointer">
-          <FaTelegramPlane size={32} />
-        </span>
-        <span className="cursor-pointer">
-          <FaTwitter size={32} />
-        </span>
-        <span className="cursor-pointer">
-          <FaChartBar size={32} />
-        </span>
+        <div className="flex-grow" />
+        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
+          <FaTelegramPlane size={24} />
+        </button>
+        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
+          <FaTwitter size={24} />
+        </button>
+        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
+          <FaChartBar size={24} />
+        </button>
       </div>
 
       {startMenuOpen && (
-        <div className="absolute bottom-12 left-0 w-64 bg-[#6574B5] text-white rounded-tr-lg shadow-lg p-4">
+        <div className="absolute bottom-12 left-0 w-64 bg-[#6574B5] text-white rounded-tr-lg shadow-lg p-4 z-[60]">
           <h2 className="text-xl font-bold mb-4">Start Menu</h2>
           {apps.map((app) => (
             <button
@@ -321,7 +320,13 @@ export default function Component() {
                 setStartMenuOpen(false);
               }}
             >
-              <span className="mr-2 text-2xl">{app.icon}</span>
+              <Image
+                src={app.iconSrc}
+                alt={`${app.name} icon`}
+                width={24}
+                height={24}
+                className="mr-2"
+              />
               <span>{app.name}</span>
             </button>
           ))}
