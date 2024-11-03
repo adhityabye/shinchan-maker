@@ -9,6 +9,7 @@ import Memories from "./Memories";
 import ShinchanSnackCatcher from "./ShinchanSnackCatcher";
 import ShinchanColoringPage from "./ShinchanColoringPage";
 import FamilyPhotoViewer from "./FamilyPhotoViewer";
+import HomeContent from "./HomeContent";
 import SnakeGame from "./SnakeGame";
 
 export default function Component() {
@@ -123,26 +124,7 @@ export default function Component() {
       id: 5,
       name: "Home",
       iconSrc: "/icons/home.png",
-      content: (
-        <div className="space-y-4 p-4 h-full overflow-auto">
-          <div className="bg-yellow-100 p-3 rounded-md shadow">
-            <h3 className="font-semibold">Meeting Notes</h3>
-            <p>Discuss project timeline and deliverables</p>
-          </div>
-          <div className="bg-blue-100 p-3 rounded-md shadow">
-            <h3 className="font-semibold">Shopping List</h3>
-            <ul className="list-disc list-inside">
-              <li>Milk</li>
-              <li>Eggs</li>
-              <li>Bread</li>
-            </ul>
-          </div>
-          <div className="bg-green-100 p-3 rounded-md shadow">
-            <h3 className="font-semibold">Ideas</h3>
-            <p>New app concept: AI-powered personal assistant</p>
-          </div>
-        </div>
-      ),
+      content: <HomeContent />,
     },
     {
       id: 6,
