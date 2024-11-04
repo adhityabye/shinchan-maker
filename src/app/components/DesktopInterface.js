@@ -11,13 +11,16 @@ import ShinchanColoringPage from "./ShinchanColoringPage";
 import FamilyPhotoViewer from "./FamilyPhotoViewer";
 import HomeContent from "./HomeContent";
 import SnakeGame from "./SnakeGame";
+import MusicPlayer from "./MusicPLayer";
 
-export default function Component() {
+export default function DesktopInterface() {
   const [activeWindows, setActiveWindows] = useState({});
   const [startMenuOpen, setStartMenuOpen] = useState(false);
   const posRefs = useRef({});
   const [zIndex, setZIndex] = useState(1000);
   const [glitchEffect, setGlitchEffect] = useState(true);
+  const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const audioRef = useRef(new Audio());
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -41,6 +44,10 @@ export default function Component() {
     if (isOpen) {
       setZIndex((prev) => prev + 1);
       posRefs.current[id].zIndex = zIndex;
+    } else if (id === 8) {
+      // Stop music when closing the music player window
+      audioRef.current.pause();
+      setIsMusicPlaying(false);
     }
   };
 
@@ -75,15 +82,14 @@ export default function Component() {
       iconSrc: "/icons/diary.png",
       content: (
         <div className="space-y-4 p-4 h-full overflow-auto">
-          <div className="p-3 rounded-md shadow">
+          <div className="bg-yellow-100 p-3 rounded-md shadow">
             <h3 className="font-semibold">Shinchan Diary</h3>
-            <div className="flex justify-center w-full">
+            <div className="flex justify-center">
               <Image
                 src="/diary/diary-1.png"
                 alt="Meeting notes"
                 width={300}
                 height={200}
-                layout="responsive"
                 className="mt-2 rounded-md"
               />
             </div>
@@ -144,6 +150,19 @@ export default function Component() {
       content: (
         <div className="space-y-4 p-4">
           <MemeEditor />
+        </div>
+      ),
+    },
+    {
+      id: 8,
+      name: "Music Player",
+      iconSrc: "/music/music.jpeg",
+      content: (
+        <div className="space-y-4 p-4">
+          <MusicPlayer
+            audioRef={audioRef}
+            setIsMusicPlaying={setIsMusicPlaying}
+          />
         </div>
       ),
     },
@@ -296,20 +315,44 @@ export default function Component() {
               </button>
             )
         )}
-        <div className="flex-grow" />
-        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
-          <FaTelegramPlane size={24} />
-        </button>
-        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
-          <FaTwitter size={24} />
-        </button>
-        <button className="cursor-pointer hover:bg-white/20 p-1 rounded">
-          <FaChartBar size={24} />
-        </button>
+        <div className="flex-grow space-x-8" />
+        {isMusicPlaying && (
+          <span className="text-white">🎵 Music is playing</span>
+        )}
+        <a
+          href="https://example.com/telegram"
+          className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
+        >
+          <img
+            src="/assets/tele.png"
+            alt="Telegram"
+            style={{ width: 24, height: 24 }}
+          />
+        </a>
+        <a
+          href="https://example.com/twitter"
+          className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
+        >
+          <img
+            src="/assets/x.png"
+            alt="Twitter"
+            style={{ width: 24, height: 24 }}
+          />
+        </a>
+        <a
+          href="https://example.com/charts"
+          className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
+        >
+          <img
+            src="/assets/dex.png"
+            alt="Charts"
+            style={{ width: 24, height: 24 }}
+          />
+        </a>
       </div>
 
       {startMenuOpen && (
-        <div className="absolute bottom-12 left-0 w-64 bg-[#6574B5] text-white rounded-tr-lg shadow-lg p-4 z-[60]">
+        <div className="absolute bottom-14 left-0 w-64 bg-[#6574B5] text-white rounded-tr-lg shadow-lg p-4">
           <h2 className="text-xl font-bold mb-4">Start Menu</h2>
           {apps.map((app) => (
             <button
@@ -320,13 +363,7 @@ export default function Component() {
                 setStartMenuOpen(false);
               }}
             >
-              <Image
-                src={app.iconSrc}
-                alt={`${app.name} icon`}
-                width={24}
-                height={24}
-                className="mr-2"
-              />
+              <span className="mr-2 text-2xl">{app.icon}</span>
               <span>{app.name}</span>
             </button>
           ))}

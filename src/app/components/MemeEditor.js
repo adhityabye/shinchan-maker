@@ -8,6 +8,7 @@ const MemeEditor = () => {
   const [texts, setTexts] = useState([]);
   const [currentText, setCurrentText] = useState("");
   const [dragging, setDragging] = useState(null);
+  const [resizing, setResizing] = useState(null);
   const canvasRef = useRef(null);
 
   const defaultStickers = [
@@ -16,7 +17,11 @@ const MemeEditor = () => {
     "/meme/STICKER3.png",
     "/meme/STICKER4.png",
     "/meme/STICKER5.png",
+    "/meme/TEKS 1.png",
+    "/meme/TEKS 2.png",
+    "/meme/TEKS 3.png",
   ];
+
   useEffect(() => {
     drawMeme();
   }, [backgroundImage, stickers, texts]);
@@ -31,7 +36,13 @@ const MemeEditor = () => {
     }
 
     stickers.forEach((sticker) => {
-      ctx.drawImage(sticker.img, sticker.x, sticker.y, 50, 50);
+      ctx.drawImage(
+        sticker.img,
+        sticker.x,
+        sticker.y,
+        sticker.width,
+        sticker.height
+      );
     });
 
     texts.forEach((text) => {
@@ -61,7 +72,10 @@ const MemeEditor = () => {
   const handleStickerAdd = (src) => {
     const img = new Image();
     img.onload = () => {
-      setStickers([...stickers, { img, x: 150, y: 150 }]);
+      setStickers([
+        ...stickers,
+        { img, x: 150, y: 150, width: 100, height: 100 },
+      ]);
     };
     img.src = src;
   };
@@ -89,21 +103,29 @@ const MemeEditor = () => {
     const y = e.clientY - rect.top;
 
     let draggedItem = null;
+    let resizingItem = null;
 
     for (let i = stickers.length - 1; i >= 0; i--) {
       const sticker = stickers[i];
       if (
         x >= sticker.x &&
-        x <= sticker.x + 50 &&
+        x <= sticker.x + sticker.width &&
         y >= sticker.y &&
-        y <= sticker.y + 50
+        y <= sticker.y + sticker.height
       ) {
-        draggedItem = { type: "sticker", index: i };
+        if (
+          x >= sticker.x + sticker.width - 10 &&
+          y >= sticker.y + sticker.height - 10
+        ) {
+          resizingItem = { type: "sticker", index: i };
+        } else {
+          draggedItem = { type: "sticker", index: i };
+        }
         break;
       }
     }
 
-    if (!draggedItem) {
+    if (!draggedItem && !resizingItem) {
       for (let i = texts.length - 1; i >= 0; i--) {
         const text = texts[i];
         const textWidth = canvasRef.current
@@ -123,15 +145,17 @@ const MemeEditor = () => {
 
     if (draggedItem) {
       setDragging({ ...draggedItem, startX: x, startY: y });
+    } else if (resizingItem) {
+      setResizing({ ...resizingItem, startX: x, startY: y });
     }
   };
 
   const handleMouseMove = (e) => {
-    if (dragging) {
-      const rect = canvasRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
+    const rect = canvasRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
+    if (dragging) {
       const dx = x - dragging.startX;
       const dy = y - dragging.startY;
 
@@ -148,11 +172,24 @@ const MemeEditor = () => {
       }
 
       setDragging({ ...dragging, startX: x, startY: y });
+    } else if (resizing) {
+      const dx = x - resizing.startX;
+      const dy = y - resizing.startY;
+
+      if (resizing.type === "sticker") {
+        const newStickers = [...stickers];
+        newStickers[resizing.index].width += dx;
+        newStickers[resizing.index].height += dy;
+        setStickers(newStickers);
+      }
+
+      setResizing({ ...resizing, startX: x, startY: y });
     }
   };
 
   const handleMouseUp = () => {
     setDragging(null);
+    setResizing(null);
   };
 
   const handleDownload = () => {
