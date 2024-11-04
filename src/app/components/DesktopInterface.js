@@ -330,7 +330,7 @@ export default function DesktopInterface() {
           />
         </a>
         <a
-          href="https://x.com/Shinchansolana_?t=eAEscjMqoZ6lrvfIQlIapQ&s=09"
+          href="https://x.com/shinchansol_"
           className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
         >
           <img
