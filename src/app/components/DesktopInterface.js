@@ -320,7 +320,7 @@ export default function DesktopInterface() {
           <span className="text-white">🎵 Music is playing</span>
         )}
         <a
-          href="https://example.com/telegram"
+          href="https://t.me/shinchan_sol"
           className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
         >
           <img
@@ -330,7 +330,7 @@ export default function DesktopInterface() {
           />
         </a>
         <a
-          href="https://example.com/twitter"
+          href="https://x.com/Shinchansolana_?t=eAEscjMqoZ6lrvfIQlIapQ&s=09"
           className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
         >
           <img
