@@ -340,7 +340,7 @@ export default function DesktopInterface() {
           />
         </a>
         <a
-          href="https://example.com/charts"
+          href="https://dexscreener.com/solana/5reptuxfK58qhoNAuEN7dJvFGSZHmHnaCn4Leh8Jpump"
           className="cursor-pointer hover:bg-white/20 p-1 rounded inline-block"
         >
           <img
